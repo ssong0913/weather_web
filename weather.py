@@ -12,5 +12,7 @@ class Weather:
         self.weather_data =  requests.get(url).json()
         print(self.weather_data)
 
+        return self.weather_data
+
 weather = Weather(city_name='노원구')
 weather.get_weather_info()
