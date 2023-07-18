@@ -8,27 +8,63 @@
     
 </head>
 <body>
-    <h1>Weather App using Flask in Python</h1>
+    
+    <div class="container">
+        
+            <h1>Weather App using Flask in Python</h1>
+        
+            <p>Get weather details of any city around the world.</p>
+        
+        
+        {% if weather | length ==0 and error==0 %}
+        <form action="/" method="POST">
+            <div>
+              <label for="city_name">City Name : </label>
+              <input name="city_name" id="city" placeholder="도시 이름" />
+              <button>Find</button>
+            </div>
+          </form>
+        {% elif weather | length ==0 and error==1 %}
+            <h2>{{ city_name }}은 존재하지 않습니다.</h2>
+            <a href="/"><button>돌아가기</button></a>
+            {% else %}
+            <h2>City Name : {{ city_name }}</h2>
+            <a href="/"><button>돌아가기</button></a>
+            <img src="http://openweathermap.org/img/w/{{ weather['weather'][0]['icon'] }}.png" alt="" srcset="">
+            <!-- <h4>{{ weather }}</h4> -->
+            <table class="table table-secondary">
+                <thead>
+                    <tr>
+                        <th>Country Code</th>
+                        <th>Coordinate</th>
+                        <th>Temperature</th>
+                        <th>Pressure</th>
+                        <th>Humidity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="bg-success">{{ weather.sys.country }}</td>
+                        <td class="bg-info">{{ weather.coord.lat }} {{ weather.coord.lon }}</td>
+                        <td id="ctemp" class="bg-danger">{{ weather.main.temp }}</td>
+                        <td class="bg-warning">{{ weather.main.pressure }}</td>
+                        <td class="bg-primary">{{ weather.main.humidity }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+    
+    
+        
+    </div>
+<script>
+    var temp = document.getElementById("ctemp").innerHTML
+    console.log(temp)
 
-    <p>Get weather details of any city around the world.</p>
-
-    {% if weather | length ==0 and error==0 %}
-    <form action="/" method="POST">
-        <div>            
-          <label for="city_name">City Name : </label>
-          <input name="city_name" id="city" placeholder="도시 이름" />
-          <button>Find</button>
-        </div>
-      </form>
-    {% elif weather | length ==0 and error==1 %}
-        <h2>{{ city_name }}은 존재하지 않습니다.</h2>
-        <a href="/"><button>돌아가기</button></a>
-        {% else %}
-        <h2>City Name : {{ city_name }}</h2>
-        <a href="/"><button>돌아가기</button></a>
-        <img src="http://openweathermap.org/img/w/{{ weather['weather'][0]['icon'] }}.png" alt="" srcset="">
-        <h4>{{ weather }}</h4>
-    {% endif %}
+    var ftemp = (temp - 273.15) * 1.8 +32
+    var ctemp = temp - 273.15
+    document.getElementById("ctemp").innerHTML = ctemp.toFixed(2) + "&#8451;"
+</script>
 
 </body>
 </html>
